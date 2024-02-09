@@ -14,11 +14,6 @@ const AddTask = (props) => {
         todo: todoText,
         isCompleted: false,
       })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
-    axios
-      .get("http://localhost:3000/todo")
       .then((res) => props.setAllTask(res.data))
       .catch((err) => console.log(err));
     setTodoText("");

@@ -34,7 +34,8 @@ app.get("/todo", async (req, res) => {
 app.post("/todo", async (req, res) => {
   const newTodo = new Todo(req.body);
   await newTodo.save();
-  res.send("Todo added");
+  const allTodo = await Todo.find();
+  res.json(allTodo);
 });
 
 app.patch("/todo/complete/:id", async (req, res) => {
