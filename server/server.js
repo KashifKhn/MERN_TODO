@@ -1,7 +1,7 @@
 import express, { urlencoded, json } from "express";
 import { connect } from "mongoose";
 import cors from "cors";
-import Todo from "./models/Todo.model.js";
+import todoRouter from "./routers/todo.js";
 const app = express();
 const PORT = 3000;
 
@@ -22,40 +22,7 @@ app.use(
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
-app.get("/todo", async (req, res) => {
-  try {
-    const todo = await Todo.find();
-    res.status(200).json(todo);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-app.post("/todo", async (req, res) => {
-  const newTodo = new Todo(req.body);
-  await newTodo.save();
-  const allTodo = await Todo.find();
-  res.json(allTodo);
-});
-
-app.patch("/todo/complete/:id", async (req, res) => {
-  const { id } = req.params;
-  await Todo.findByIdAndUpdate(id, req.body, { new: true });
-  res.send("todo toggle");
-});
-
-app.patch("/todo/update/:id", async (req, res) => {
-  const { id } = req.params;
-  const task = await Todo.findByIdAndUpdate(id, req.body, { new: true });
-  console.log(task);
-  res.send("todo Updated");
-});
-
-app.delete("/todo/:id", async (req, res) => {
-  const { id } = req.params;
-  await Todo.findByIdAndDelete(id);
-  res.send("Todo Deleted");
-});
+app.use("/todo", todoRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

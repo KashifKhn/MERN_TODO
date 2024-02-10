@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const AddTask = (props) => {
   const [todoText, setTodoText] = useState("");
-  const handleOnClick = () => {
+  const inputRef = useRef(null);
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (todoText.trim().length <= 0) {
       setTodoText("");
       return;
@@ -18,24 +20,26 @@ const AddTask = (props) => {
       .catch((err) => console.log(err));
     setTodoText("");
   };
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
   return (
-    <div className="input-group mb-3 w-100">
-      <input
-        type="text"
-        className="form-control"
-        placeholder="Your Task"
-        value={todoText}
-        onChange={(e) => setTodoText(e.target.value)}
-      />
-      <button
-        className="btn btn-primary"
-        type="button"
-        id="button-addon2"
-        onClick={handleOnClick}
-      >
-        Add Task
-      </button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div className="input-group mb-3 w-100">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Your Task"
+          ref={inputRef}
+          value={todoText}
+          onChange={(e) => setTodoText(e.target.value)}
+        />
+        <button className="btn btn-primary" type="submit" id="button-addon2">
+          Add Task
+        </button>
+      </div>
+    </form>
   );
 };
 

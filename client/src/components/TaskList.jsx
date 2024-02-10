@@ -7,7 +7,6 @@ const TaskList = ({ allTask, setAllTask }) => {
     const filterTask = allTask.filter((task) => task._id !== id);
     axios
       .delete(`http://localhost:3000/todo/${id}`)
-      .then((res) => console.log(res))
       .catch((err) => console.log(err));
     setAllTask(filterTask);
   };
@@ -18,10 +17,9 @@ const TaskList = ({ allTask, setAllTask }) => {
     );
     const task = allTask.find((task) => task._id === id);
     axios
-      .patch(`http://localhost:3000/todo/complete/${id}`, {
+      .patch(`http://localhost:3000/todo/update/${id}`, {
         isCompleted: !task.isCompleted,
       })
-      .then((res) => console.log(res))
       .catch((err) => console.log(err));
     setAllTask(completeTask);
   };
@@ -35,7 +33,6 @@ const TaskList = ({ allTask, setAllTask }) => {
       .patch(`http://localhost:3000/todo/update/${id}`, {
         todo: newText,
       })
-      .then((res) => console.log(res))
       .catch((err) => console.log(err));
     setAllTask(updatedTask);
   };
